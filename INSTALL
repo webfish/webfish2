@@ -1,0 +1,67 @@
+Expand the webfish.1.0.tar.gz file into a preferred directory:
+       tar xzf webfish.1.0.tar.gz
+A directory webfish.1.0 is created. It contains all the necessary code and an example code.
+
+To run the program successfully, number of dependencies must be met:
+
+Operating system:
+       Ubuntu 10.10 were tested, but other versions of Linux and possibly MAC OS X might be
+       supported as long as shell commands mv, rm, rmdir, fold, chmod, sort, cut, tr, awk,
+       echo, grep, sed and wc are available. In MAC OS X hwprefs must be supported.
+
+GNU Octave interpreter:
+       The code was tested with GNU Octave 3.2.4 with Octave-Forge 'IO' package. Matlab
+       should be supported but has not been thoroughly tested.
+
+Gnuplot:
+       Octave requires Gnuplot to generate figures. Version 4.4.0 is know to work with the
+       program, but other versions are likely to be compatible.
+
+NCBI BLAST:
+       NCBI BLAST 2.2.21 needs to be installed and functional. Other versions were not
+       tested but may be compatible. The path to the 'megablast' executable must be
+       provided in the webfish.m file.
+
+EMBOSS:
+       Set of bioinformatics tools is used to perform restriction endonuclease binding
+       site search. version 6.2.0 is supported and others are likely to be compatible too.
+       REBASE enzyme database is required to perform the restriction endonuclease cuts.
+       Obtain it from ftp://ftp.neb.com/pub/rebase/ and process it with EMBOSS before use.
+
+Primer3:
+       Primer3 2.2.3 needs to be installed and functional. Other versions were not
+       tested but may be supported without any guarantee, however 1.x.x versions are not
+       supported. The path to the 'primer3_core' executable must be provided in the
+       webfish.m file.
+
+Formatted genome database:
+       Formatted genome database. A raw genome database can be obtained from
+       ftp://ftp.ensembl.org/. The database required to run the attached example is
+       available at ftp://ftp.ensembl.org/pub/release-64/fasta/homo_sapiens/dna/. Download
+       all files and format them using 'formatdb' included with NCBI BLAST:
+             formatdb -i input_fasta_file -p F -o T
+       Save the files in a directory and include this directory in the configuration file
+       "tasks/IJK.conf" <organism> tag replacing spaces with underscores. For 
+       instance, if the tag is <organism>homo sapiens</organism>, the directory containing
+       the formated chromosomal sequences must be called "homo_sapiens".
+
+Example run:
+       * Install all the necessary software. For Ubuntu 10.10 this would require:
+       	   sudo apt-get install octave3.2 octave-io gnuplot blast2
+	   wget ftp://ftp.neb.com/pub/rebase/proto.txt ftp://ftp.neb.com/pub/rebase/withrefm.txt
+	   sudo rebaseextract -infile withrefm.txt -protofile proto.txt
+	   wget http://sourceforge.net/projects/primer3/files/primer3/2.2.3/primer3-2.2.3.tar.gz
+	   tar xzf primer3-2.2.3.tar.gz; cd primer3-2.2.3/src; make all; make test
+	       Last two lines can be replaced by sudo apt-get install primer3 in Ubuntu >11.04.
+       * In the ./webfish.m file on line 52 change the blast_dir to the path of the NCBI
+         megablast excecutable.
+       * In the ./webfish.m file on line 54 change the primer3_dir to the path of the
+         primer3_core excecutable created 
+       * In the ./webfish.m file on line 60 change the genomes_dir to the path containing
+       	 the directories with the formated genome databases. For instance if the formatted
+	 databases are in the directory "./genomes/homo_sapiens/" it should say:
+	 genomes_dir = '/genomes/';.
+       * Run MATLAB.
+       * Change to the directory containing webfish.m and execute it.
+       * Results will appear in the folder ./tasks/IJK/
+
